@@ -55,6 +55,7 @@ const register = async (req, res) => {
       // id: result._id,
       email: result.email,
       name: result.name,
+      subscription: result.subscription,
     },
     token,
   });
