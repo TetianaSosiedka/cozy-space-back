@@ -52,7 +52,7 @@ const register = async (req, res) => {
 
   res.status(201).json({
     user: {
-      id: result._id,
+      // id: result._id,
       email: result.email,
       name: result.name,
     },
