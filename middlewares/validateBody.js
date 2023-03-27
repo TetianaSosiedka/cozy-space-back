@@ -1,15 +1,14 @@
-const { RequestError } = require("../helpers");
+const RequestError = require("../helpers/RequestError");
 
 const validateBody = (schema) => {
-  const func = (req, res, next) => {
+  const validateFunction = (req, res, next) => {
     const { error } = schema.validate(req.body);
     if (error) {
-      next(RequestError(400, "Ошибка от Joi или другой библиотеки валидации"));
+      next(RequestError(400, error.message));
     }
     next();
   };
-
-  return func;
+  return validateFunction;
 };
 
 module.exports = validateBody;

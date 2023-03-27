@@ -1,13 +1,9 @@
-const ctrlWrapper = require("./ctrlWraper");
 const RequestError = require("./RequestError");
-const handleSaveErrors = require("./handleSaveErrors");
-const sendEmail = require("./sendEmail");
-const templateEmail = require("./templateEmail");
+const ctrlWrapper = require("./ctrlWrapper");
+const handleSaveErrors = require("./handleSaveError");
 
 module.exports = {
-  ctrlWrapper,
   RequestError,
+  ctrlWrapper,
   handleSaveErrors,
-  sendEmail,
-  templateEmail,
 };
