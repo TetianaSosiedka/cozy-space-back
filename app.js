@@ -8,6 +8,7 @@ const noticesRouter = require("./routes/api/notices");
 const newsRouter = require("./routes/api/news");
 const sponsorsRouter = require("./routes/api/friends");
 const userRouter = require("./routes/api/user");
+const productsRouter = require("./routes/api/products");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api/notices", noticesRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/friends", sponsorsRouter);
 app.use("/api/user", userRouter);
+app.use("/api/products", productsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
