@@ -10,9 +10,15 @@ const router = express.Router();
 router.post(
   "/add/",
   authenticate,
-  upload.single("coverImg"),
+  upload.fields([
+    { name: "coverImg", maxCount: 1 },
+    { name: "gallery", maxCount: 15 },
+  ]),
   validateBody(addProductSchema),
   ctrlWrapper(ctrl.addProduct)
 );
+
+// GetProducts
+router.get("/", ctrlWrapper(ctrl.getProducts));
 
 module.exports = router;

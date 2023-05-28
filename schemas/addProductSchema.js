@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const addProductSchema = Joi.object({
   coverImg: Joi.string(),
-  galerry: Joi.array(),
+  gallery: Joi.array(),
   title: Joi.string().required(),
   name: Joi.string().required(),
   price: Joi.number().required(),

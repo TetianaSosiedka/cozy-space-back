@@ -6,7 +6,7 @@ const productSchema = new Schema(
     coverImg: {
       type: String,
     },
-    galerry: {
+    gallery: {
       type: Array,
     },
     title: {

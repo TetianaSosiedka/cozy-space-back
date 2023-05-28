@@ -4,38 +4,48 @@ const { RequestError } = require("../../helpers");
 const cloudinary = require("../../middlewares/cloudinary");
 
 const addProduct = async (req, res) => {
-  // -----------
-  try {
-    // Upload image to cloudinary
-    const product = await cloudinary.uploader.upload(req.file.path);
-
-    // Create new user
-    const result = await Product.create({
-      ...req.body,
-      coverImg: product.secure_url,
+  const cloudinaryImageUploadMethod = async (file) => {
+    return new Promise((resolve) => {
+      cloudinary.uploader.upload(file, (err, res) => {
+        if (err) return res.status(500).send("upload image error");
+        resolve({
+          res: res.secure_url,
+        });
+      });
     });
+  };
 
-    if (!result) {
-      throw RequestError(404, "Not found");
+  const galleryUrls = [];
+  let coverImgUrl = "";
+  const reqFiles = [];
+  reqFiles.push(req.files.coverImg, req.files.gallery);
+  const files = [].concat(...reqFiles);
+  console.log("addProduct  files:", files);
+
+  for (const file of files) {
+    const { path, fieldname } = file;
+
+    const newPath = await cloudinaryImageUploadMethod(path);
+
+    if (fieldname === "gallery") {
+      galleryUrls.push(newPath);
     }
-
-    res.status(201).json(result);
-  } catch (err) {
-    console.log(err);
+    if (fieldname === "coverImg") {
+      coverImgUrl = newPath;
+    }
   }
-  // --------------
 
-  // if (req.file) {
-  //   // console.log(req.file);
-  //   const file = req.file.buffer;
-  //   const result = await uploadImage(file, "products");
-  //   coverImg = result.secure_url;
-  // }
+  const result = await Product.create({
+    ...req.body,
+    gallery: galleryUrls.map((url) => url.res),
+    coverImg: coverImgUrl.res,
+  });
 
-  // const result = await Product.create({
-  //   ...req.body,
-  //   coverImg,
-  // });
+  if (!result) {
+    throw RequestError(404, "Not found");
+  }
+
+  res.status(201).json(result);
 };
 
 module.exports = addProduct;

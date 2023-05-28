@@ -3,13 +3,23 @@ const path = require("path");
 
 // Multer config
 module.exports = multer({
-  storage: multer.diskStorage({}),
-  fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png") {
-      cb(new Error("File type is not supported"), false);
-      return;
-    }
-    cb(null, true);
-  },
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+        cb(null, path.join(__dirname, "../"));
+      }
+      if (file.mimetype === "video/mp4") {
+        cb(null, path.join(__dirname, "../"));
+      } else {
+        cb =
+          ({
+            message: "Unsupported File Format",
+          },
+          false);
+      }
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  }),
 });

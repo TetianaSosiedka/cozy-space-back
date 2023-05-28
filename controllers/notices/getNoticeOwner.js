@@ -3,7 +3,6 @@ const { RequestError } = require("../../helpers");
 
 const getNoticeOwner = async (req, res) => {
   const { noticeId } = req.params;
-  console.log(noticeId);
   const currentNotice = await Notice.findById(noticeId).populate("owner");
 
   const result = currentNotice.owner;
